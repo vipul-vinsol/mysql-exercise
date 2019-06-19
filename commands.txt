@@ -1,0 +1,11 @@
+CREATE TABLE `testing_table` (name varchar(50), contact_name varchar(40), roll_no(30));
+
+ALTER TABLE `testing_table` DROP `name`;
+
+ALTER TABLE `testing_table` CHANGE contact_name username varchar(50);
+
+ALTER TABLE `testing_table` ADD first_name varchar(30);
+
+ALTER TABLE `testing_table` ADD last_name varchar(30);
+
+ALTER TABLE `testing_table` MODIFY roll_no int;
