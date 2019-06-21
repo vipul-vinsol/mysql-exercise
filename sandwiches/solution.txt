@@ -1,0 +1,61 @@
+-- Solutions
+
+
+-- First 
+SELECT location 
+FROM sandwiches 
+WHERE filling 
+IN 
+(
+	SELECT filling
+	FROM tastes 
+	WHERE name='Jones'
+);
+
+Output:-
+
++-----------+
+| location  |
++-----------+
+| O'Neill's |
+| Buttery   |
++-----------+
+2 rows in set (0.00 sec)
+
+
+-- Second
+SELECT location 
+FROM tastes 
+INNER JOIN sandwiches 
+ON tastes.filling = sandwiches.filling 
+WHERE tastes.name='Jones';
+
++-----------+
+| location  |
++-----------+
+| O'Neill's |
+| Buttery   |
++-----------+
+2 rows in set (0.00 sec)
+
+
+-- Third
+SELECT CAN_VISIT.location, COUNT(CAN_VISIT.name) AS 'count'
+FROM 
+(
+	SELECT DISTINCT location, name 
+	FROM tastes 
+	JOIN sandwiches 
+	ON tastes.filling=sandwiches.filling
+) AS CAN_VISIT GROUP BY location;
+
+
++-----------+-------+
+| location  | count |
++-----------+-------+
+| Lincoln   |     2 |
+| O'Neill's |     3 |
+| Old Nag   |     2 |
+| Buttery   |     3 |
++-----------+-------+
+4 rows in set (0.00 sec)
