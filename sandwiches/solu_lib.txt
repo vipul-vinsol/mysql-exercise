@@ -1,0 +1,81 @@
+CREATE TABLE `branch` (
+  `b_code` char(2) DEFAULT NULL,
+  `librarian` varchar(50) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL
+);
+
+INSERT INTO `branch` VALUES 
+('B1','John Smith','2 Anglesea Rd'),
+('B2','Mary Jones','34 Pearse St'),
+('B3','Francis Owens','Grange X');
+
+CREATE TABLE `holdings` (
+  `branch` char(2) DEFAULT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `copies` bigint(20) DEFAULT NULL
+);
+
+INSERT INTO `holdings` VALUES 
+('B1','Susannah',3),
+('B1','How to',2),
+('B1','A hist ..',1),
+('B2','How to',4),
+('B2','Computers',2),
+('B3','The wife',3),
+('B3','A hist ..',1),
+('B3','Computers',4),
+('B3','Susannah',3),
+('B3','The wife',1);
+
+CREATE TABLE `title` (
+  `t` varchar(100) DEFAULT NULL,
+  `author` varchar(50) DEFAULT NULL,
+  `publisher` varchar(50) DEFAULT NULL
+);
+
+INSERT INTO `title` VALUES 
+('Susannah','Ann Brown','Macmillan'),
+('How to','Amy Fly','Stop Press'),
+('A hist ..','David Little','Wiley'),
+('Computers','Blaise Pascal','Applewoods'),
+('The Wife','Ann Brown','Macmillan');
+
+
+SELECT t AS 'Title' FROM title WHERE publisher="Macmillan";
++----------+
+| Title    |
++----------+
+| Susannah |
+| The Wife |
++----------+
+2 rows in set (0.00 sec)
+
+
+SELECT DISTINCT branch FROM holdings WHERE title IN (SELECT t FROM title WHERE author='Ann Brown');
++--------+
+| branch |
++--------+
+| B1     |
+| B3     |
++--------+
+4 rows in set (0.00 sec)
+
+
+SELECT DISTINCT branch FROM holdings JOIN title ON holdings.title=title.t WHERE title.author = 'Ann Brown';
++--------+
+| branch |
++--------+
+| B1     |
+| B3     |
++--------+
+2 rows in set (0.00 sec)
+
+SELECT branch, COUNT(copies) AS 'count' FROM holdings GROUP BY branch;
++--------+-------+
+| branch | count |
++--------+-------+
+| B1     |     3 |
+| B2     |     2 |
+| B3     |     5 |
++--------+-------+
+3 rows in set (0.00 sec)
