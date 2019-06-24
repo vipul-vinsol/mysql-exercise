@@ -1,4 +1,52 @@
+CREATE TABLE `Commissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  CONSTRAINT `Commissions_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `Employees` (`id`)
+);
 
+INSERT INTO `Commissions` 
+VALUES 
+(1,1,5000),
+(2,2,3000),
+(3,3,4000),
+(4,1,4000),
+(5,2,3000),
+(6,4,2000),
+(7,5,1000),
+(8,6,5000),
+(9,2,5000);
+
+
+CREATE TABLE `Departments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` char(20) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+INSERT INTO `Departments` VALUES (1,'Banking'),(2,'Insurance'),(3,'Services');
+
+CREATE TABLE `Employees` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` char(40) NOT NULL,
+  `salary` bigint(20) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `department_id` (`department_id`),
+  CONSTRAINT `Employees_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `Departments` (`id`)
+);
+
+
+INSERT INTO `Employees` 
+VALUES 
+(1,'Chris Gayle',1000000,1),
+(2,'Michael Clarke',800000,2),
+(3,'Rahul Dravid',700000,1),
+(4,'Ricky Pointing',600000,2),
+(5,'Albie Morkel',650000,2),
+(6,'Wasim Akram',750000,3);
 
 -- 1
 SELECT employee_id, SUM(amount) AS 'commission'
