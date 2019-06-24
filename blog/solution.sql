@@ -125,20 +125,17 @@ SELECT * FROM posts WHERE id NOT IN (SELECT on_post FROM comments);
 
 
 -- #5
-SELECT * FROM posts 
-JOIN (
-	SELECT on_post, COUNT(on_post) as total 
-	FROM comments 
-	GROUP BY on_post 
-	ORDER BY total DESC 
-	LIMIT 1
-) AS max_cmt ON posts.id=max_cmt.on_post;
-+----+---------+----------------------+---------+-------+
-| id | user_id | content              | on_post | total |
-+----+---------+----------------------+---------+-------+
-|  4 |       4 | Updated post content |       4 |     2 |
-+----+---------+----------------------+---------+-------+
+SELECT on_post 
+FROM comments 
+GROUP BY on_post 
+HAVING count(on_post)=(SELECT COUNT(on_post) AS max FROM comments GROUP BY on_post ORDER BY max DESC LIMIT 1);
++---------+
+| on_post |
++---------+
+|       4 |
++---------+
 1 row in set (0.00 sec)
+
 
 -- #6
 
