@@ -40,15 +40,11 @@ WHERE tastes.name='Jones';
 
 
 -- Third
-SELECT CAN_VISIT.location, COUNT(CAN_VISIT.name) AS 'count'
-FROM 
-(
-	SELECT DISTINCT location, name 
-	FROM sandwiches 
-	JOIN tastes
-	ON sandwiches.filling = tastes.filling
-) AS CAN_VISIT GROUP BY location;
-
+SELECT location, COUNT(DISTINCT name)  
+FROM sandwiches  
+JOIN tastes 
+ON sandwiches.filling = tastes.filling 
+GROUP BY location;
 
 +-----------+-------+
 | location  | count |
