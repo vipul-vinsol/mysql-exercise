@@ -25,9 +25,9 @@ Output:-
 
 -- Second
 SELECT location 
-FROM tastes 
-INNER JOIN sandwiches 
-ON tastes.filling = sandwiches.filling 
+FROM sandwiches 
+INNER JOIN tastes 
+ON sandwiches.filling = tastes.filling 
 WHERE tastes.name='Jones';
 
 +-----------+
@@ -44,9 +44,9 @@ SELECT CAN_VISIT.location, COUNT(CAN_VISIT.name) AS 'count'
 FROM 
 (
 	SELECT DISTINCT location, name 
-	FROM tastes 
-	JOIN sandwiches 
-	ON tastes.filling=sandwiches.filling
+	FROM sandwiches 
+	JOIN tastes
+	ON sandwiches.filling = tastes.filling
 ) AS CAN_VISIT GROUP BY location;
 
 
