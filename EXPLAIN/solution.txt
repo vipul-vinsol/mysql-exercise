@@ -1,0 +1,88 @@
+Q2.1)
+The row column means indicates which values are considered while finding the results of the select query.
+In this case, it indicates that all the rows of the table were matched / tried to find the desired results.
+
+Q2.2)
+For parameters that are selected conditionally frequently, indexing will speed up the query, 
+so adding a index on user_id will speed up the query.
+
+Q3.1)
+The indexing works better on number types then string types 
+So indexing user_id and commentable_id will increase performance, 
+indexing commentable_type will increase it further
+
+Q4.1)
+EXPLAIN select * from posts INNER JOIN users ON posts.user_id=users.id\G; 
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: posts
+   partitions: NULL
+         type: ALL
+possible_keys: fk_post
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 6
+     filtered: 100.00
+        Extra: NULL
+*************************** 2. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: users
+   partitions: NULL
+         type: eq_ref
+possible_keys: PRIMARY
+          key: PRIMARY
+      key_len: 8
+          ref: BLOG.posts.user_id
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+2 rows in set, 1 warning (0.00 sec)
+
+ERROR: 
+No query specified
+
+
+The interesting values in the output section is the possible_keys section that is highlighting the fact that user_id in posts table would benifit by being a foreign key which references id from users, which is not don't in the schema currently, the type SIMPLE basically means that there are no derived or subquery or unions and the table are simple
+
+
+
+
+Q4.2)
+EXPLAIN SELECT * FROM posts WHERE id NOT IN (SELECT on_post FROM comments)\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: PRIMARY
+        table: posts
+   partitions: NULL
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 6
+     filtered: 100.00
+        Extra: Using where
+*************************** 2. row ***************************
+           id: 2
+  select_type: DEPENDENT SUBQUERY
+        table: comments
+   partitions: NULL
+         type: index_subquery
+possible_keys: fk_comment_on_post
+          key: fk_comment_on_post
+      key_len: 8
+          ref: func
+         rows: 2
+     filtered: 100.00
+        Extra: Using index
+2 rows in set, 1 warning (0.01 sec)
+
+ERROR: 
+No query specified
+
+
+JOINS mostly perform better as mysql can optimize then better as compared to sub queries, but it depands on the query under question.
+
