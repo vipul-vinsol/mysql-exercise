@@ -74,8 +74,11 @@ LIMIT 1;
 
 -- #4
 
-SELECT e.name, c.amount  
-FROM Employees AS e 
-JOIN Commissions AS c 
+SELECT 
+GROUP_CONCAT(CONCAT(name) separator ' '), 
+c.amount
+FROM Employees AS e  
+JOIN Commissions AS c  
 ON e.id=c.employee_id 
-WHERE c.amount > 3000;
+GROUP BY c.amount 
+HAVING c.amount > 3000;
