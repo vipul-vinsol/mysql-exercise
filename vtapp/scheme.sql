@@ -25,6 +25,7 @@ CREATE TABLE exercises
 	content TEXT NOT NULL,
 	track_id INT NOT NULL,
 	assigned_to INT NOT NULL,
+	hidden ENUM('visible', 'hidden') NOT NULL  DEFAULT 'visible',
 	FOREIGN KEY (track_id) REFERENCES tracks(id),
 	FOREIGN KEY (assigned_to) REFERENCES users(id)
 );
@@ -73,33 +74,3 @@ CREATE TABLE solutions
 	assigned_exercise_id INT NOT NULL,
 	FOREIGN KEY (assigned_exercise_id) REFERENCES assigned_exercises(id)
 );
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
